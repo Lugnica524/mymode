@@ -34,8 +34,8 @@ public class ExampleModClient implements ClientModInitializer {
         "{slot:6,item:{id:\"minecraft:netherite_axe\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:efficiency\":5,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:sharpness\":5}}}}," +
         "{slot:7,item:{id:\"minecraft:trident\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:impaling\":5,\"minecraft:loyalty\":3,\"minecraft:unbreaking\":3,\"minecraft:mending\":1}}}}," +
         "{slot:8,item:{id:\"minecraft:mace\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:density\":5,\"minecraft:breach\":4,\"minecraft:wind_burst\":3,\"minecraft:unbreaking\":3,\"minecraft:mending\":1}}}}," +
-        "{slot:9,item:{id:\"minecraft:enchanted_golden_apple\",count:16}}," +
-        "{slot:10,item:{id:\"minecraft:totem_of_undying\",count:8}}" +
+        "{slot:9,item:{id:\"minecraft:enchanted_golden_apple\",count:1}},{slot:11,item:{id:\"minecraft:enchanted_golden_apple\",count:1}},{slot:12,item:{id:\"minecraft:enchanted_golden_apple\",count:1}},{slot:16,item:{id:\"minecraft:enchanted_golden_apple\",count:1}}," +
+        "{slot:17,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:18,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:19,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:20,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:21,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:22,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:23,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:24,item:{id:\"minecraft:totem_of_undying\",count:1}}" +
         "]]";
 
     private static KeyMapping menuKey;
