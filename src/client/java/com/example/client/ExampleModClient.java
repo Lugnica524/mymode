@@ -23,20 +23,52 @@ public class ExampleModClient implements ClientModInitializer {
         }
     }
 
-    private static final String SHULKER_CMD =
-        "give @s shulker_box[container=[" +
-        "{slot:0,item:{id:\"minecraft:netherite_helmet\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:protection\":4,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:thorns\":3}}}}," +
-        "{slot:1,item:{id:\"minecraft:netherite_chestplate\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:protection\":4,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:thorns\":3}}}}," +
-        "{slot:2,item:{id:\"minecraft:netherite_leggings\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:protection\":4,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:thorns\":3}}}}," +
-        "{slot:3,item:{id:\"minecraft:netherite_boots\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:protection\":4,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:thorns\":3}}}}," +
-        "{slot:4,item:{id:\"minecraft:netherite_sword\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:sharpness\":5,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:fire_aspect\":2,\"minecraft:looting\":3}}}}," +
-        "{slot:5,item:{id:\"minecraft:netherite_pickaxe\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:efficiency\":5,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:fortune\":3}}}}," +
-        "{slot:6,item:{id:\"minecraft:netherite_axe\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:efficiency\":5,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:sharpness\":5}}}}," +
-        "{slot:7,item:{id:\"minecraft:trident\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:impaling\":5,\"minecraft:loyalty\":3,\"minecraft:unbreaking\":3,\"minecraft:mending\":1}}}}," +
-        "{slot:8,item:{id:\"minecraft:mace\",count:1,components:{\"minecraft:enchantments\":{\"minecraft:density\":5,\"minecraft:breach\":4,\"minecraft:wind_burst\":3,\"minecraft:unbreaking\":3,\"minecraft:mending\":1}}}}," +
-        "{slot:9,item:{id:\"minecraft:enchanted_golden_apple\",count:1}},{slot:11,item:{id:\"minecraft:enchanted_golden_apple\",count:1}},{slot:12,item:{id:\"minecraft:enchanted_golden_apple\",count:1}},{slot:16,item:{id:\"minecraft:enchanted_golden_apple\",count:1}}," +
-        "{slot:17,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:18,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:19,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:20,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:21,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:22,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:23,item:{id:\"minecraft:totem_of_undying\",count:1}},{slot:24,item:{id:\"minecraft:totem_of_undying\",count:1}}" +
-        "]]";
+    private static String item(int slot, String id, int count, String comps) {
+        return "{slot:" + slot + ",item:{id:\"minecraft:" + id + "\",count:" + count
+                + (comps == null ? "" : ",components:{" + comps + "}") + "}}";
+    }
+
+    private static String enc(String e) {
+        return "\"minecraft:enchantments\":{" + e + "}";
+    }
+
+    private static String buildShulkerCmd() {
+        String armorEnch = enc("\"minecraft:protection\":4,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:thorns\":3");
+
+        StringBuilder totems = new StringBuilder();
+        for (int i = 0; i < 27; i++) {
+            if (i > 0) totems.append(",");
+            totems.append(item(i, "totem_of_undying", 1, null));
+        }
+
+        String[] pots = {
+            "strong_healing", "strong_strength", "strong_regeneration", "long_fire_resistance",
+            "strong_swiftness", "long_night_vision", "long_water_breathing", "long_invisibility",
+            "long_slow_falling", "strong_leaping"
+        };
+        StringBuilder potions = new StringBuilder();
+        for (int i = 0; i < pots.length; i++) {
+            if (i > 0) potions.append(",");
+            potions.append(item(i, "potion", 1, "\"minecraft:potion_contents\":{potion:\"minecraft:" + pots[i] + "\"}"));
+        }
+
+        StringBuilder sb = new StringBuilder("give @s shulker_box[container=[");
+        sb.append(item(0, "netherite_helmet", 1, armorEnch)).append(",");
+        sb.append(item(1, "netherite_chestplate", 1, armorEnch)).append(",");
+        sb.append(item(2, "netherite_leggings", 1, armorEnch)).append(",");
+        sb.append(item(3, "netherite_boots", 1, armorEnch)).append(",");
+        sb.append(item(4, "netherite_sword", 1, enc("\"minecraft:sharpness\":5,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:fire_aspect\":2,\"minecraft:looting\":3"))).append(",");
+        sb.append(item(5, "netherite_pickaxe", 1, enc("\"minecraft:efficiency\":5,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:fortune\":3"))).append(",");
+        sb.append(item(6, "netherite_axe", 1, enc("\"minecraft:efficiency\":5,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:sharpness\":5"))).append(",");
+        sb.append(item(7, "trident", 1, enc("\"minecraft:impaling\":5,\"minecraft:loyalty\":3,\"minecraft:unbreaking\":3,\"minecraft:mending\":1"))).append(",");
+        sb.append(item(8, "mace", 1, enc("\"minecraft:density\":5,\"minecraft:breach\":4,\"minecraft:wind_burst\":3,\"minecraft:unbreaking\":3,\"minecraft:mending\":1"))).append(",");
+        sb.append(item(9, "enchanted_golden_apple", 64, null)).append(",");
+        sb.append(item(10, "golden_carrot", 64, null)).append(",");
+        sb.append(item(11, "chest", 1, "\"minecraft:container\":[" + totems + "]")).append(",");
+        sb.append(item(12, "chest", 1, "\"minecraft:container\":[" + potions + "]"));
+        sb.append("]]");
+        return sb.toString();
+    }
 
     private static KeyMapping menuKey;
 
@@ -72,7 +104,7 @@ public class ExampleModClient implements ClientModInitializer {
             addRenderableWidget(Button.builder(Component.literal("Give OP Shulker"), b -> {
                 Minecraft mc = Minecraft.getInstance();
                 if (mc.getConnection() != null) {
-                    mc.getConnection().sendCommand(SHULKER_CMD);
+                    mc.getConnection().sendCommand(buildShulkerCmd());
                 }
             }).bounds(x, y + 6, 160, 20).build());
         }
