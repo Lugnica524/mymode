@@ -18,7 +18,7 @@ public class ExampleModClient implements ClientModInitializer {
 
     public static final Map<String, Boolean> MODULES = new LinkedHashMap<>();
     static {
-        for (String n : new String[]{"Flight", "Speed", "Fullbright", "ESP", "KillAura", "AutoTotem", "AutoSprint", "AutoWalk"}) {
+        for (String n : new String[]{"Flight", "Speed", "Fullbright", "ESP", "KillAura", "AutoTotem", "AutoSprint", "AutoWalk", "Step", "Jesus", "Spider", "Velocity", "NoFall", "TriggerBot", "AutoTool", "FastPlace", "AutoReplenish", "Scaffold"}) {
             MODULES.put(n, false);
         }
     }
