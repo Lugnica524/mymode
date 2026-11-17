@@ -19,7 +19,7 @@ public class CleanMenu extends Screen {
         {"Flight", "Speed", "Step", "Jesus", "Spider", "NoFall", "AutoSprint", "AutoWalk"},
         {"KillAura", "TriggerBot", "AutoTotem", "Velocity"},
         {"AutoTool", "FastPlace", "AutoReplenish", "Scaffold"},
-        {"Fullbright", "ESP"}
+        {"Fullbright", "ESP", "HUD", "Freecam"}
     };
     private static int tab = 0;
 
@@ -46,6 +46,8 @@ public class CleanMenu extends Screen {
             {"ESP", "Canlıları duvar arkasından bile parlak gösterir."}
         };
         for (String[] e : d) DESC.put(e[0], e[1]);
+        DESC.put("HUD", "Sol üstte açık hileleri ve koordinatları gösterir.");
+        DESC.put("Freecam", "Kamera karakterden ayrılıp serbestçe uçar. WASD, Space, Shift.");
     }
     private static final String SHULKER_DESC = "OP eşya dolu Shulker verir. Tek oyunculuda komutsuz çalışır.";
 

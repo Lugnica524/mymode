@@ -3,7 +3,7 @@
 	"package": "com.example.client.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"client": [
-		"ExampleClientMixin", "EntityGlowMixin"
+		"ExampleClientMixin", "EntityGlowMixin", "CameraMixin", "PlayerFreezeMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

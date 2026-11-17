@@ -26,6 +26,8 @@ import java.util.List;
 
 public class Hacks {
     private static int ticks = 0;
+    public static double fx, fy, fz;
+    private static boolean freeWas = false;
     private static boolean fbWas = false;
     private static boolean stepWas = false;
     private static final Item[] last = new Item[9];
@@ -77,6 +79,16 @@ public class Hacks {
         LocalPlayer p = mc.player;
         if (p == null || mc.level == null || mc.gameMode == null) return;
         ticks++;
+        if (on("Freecam")) {
+            if (!freeWas) { fx = p.getX(); fy = p.getEyeY(); fz = p.getZ(); freeWas = true; }
+            double[] fd = dir(mc);
+            fx += fd[0] * 0.9;
+            fz += fd[1] * 0.9;
+            if (mc.options.keyJump.isDown()) fy += 0.9;
+            if (mc.options.keyShift.isDown()) fy -= 0.9;
+        } else {
+            freeWas = false;
+        }
 
         // Flight / Speed
         if (on("Flight")) {

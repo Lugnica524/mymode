@@ -18,7 +18,7 @@ public class ExampleModClient implements ClientModInitializer {
 
     public static final Map<String, Boolean> MODULES = new LinkedHashMap<>();
     static {
-        for (String n : new String[]{"Flight", "Speed", "Fullbright", "ESP", "KillAura", "AutoTotem", "AutoSprint", "AutoWalk", "Step", "Jesus", "Spider", "Velocity", "NoFall", "TriggerBot", "AutoTool", "FastPlace", "AutoReplenish", "Scaffold"}) {
+        for (String n : new String[]{"Flight", "Speed", "Fullbright", "ESP", "KillAura", "AutoTotem", "AutoSprint", "AutoWalk", "Step", "Jesus", "Spider", "Velocity", "NoFall", "TriggerBot", "AutoTool", "FastPlace", "AutoReplenish", "Scaffold", "HUD", "Freecam"}) {
             MODULES.put(n, false);
         }
     }
@@ -74,6 +74,7 @@ public class ExampleModClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        HudOverlay.register();
         menuKey = KeyMappingHelper.registerKeyMapping(
                 new KeyMapping("key.modid.menu", InputConstants.KEY_K, KeyMapping.Category.MISC));
 
