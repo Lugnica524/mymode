@@ -32,7 +32,7 @@ public class ExampleModClient implements ClientModInitializer {
         return "\"minecraft:enchantments\":{" + e + "}";
     }
 
-    private static String buildShulkerCmd() {
+    public static String buildShulkerCmd() {
         String armorEnch = enc("\"minecraft:protection\":4,\"minecraft:unbreaking\":3,\"minecraft:mending\":1,\"minecraft:thorns\":3");
 
         StringBuilder totems = new StringBuilder();
@@ -80,7 +80,7 @@ public class ExampleModClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(mc -> {
             Hacks.tick(mc);
             while (menuKey.consumeClick()) {
-                mc.setScreenAndShow(new ModMenu());
+                mc.setScreenAndShow(new CleanMenu());
             }
         });
     }
