@@ -18,7 +18,7 @@ public class ExampleModClient implements ClientModInitializer {
 
     public static final Map<String, Boolean> MODULES = new LinkedHashMap<>();
     static {
-        for (String n : new String[]{"Flight", "Speed", "Fullbright", "ESP", "KillAura", "AutoTotem"}) {
+        for (String n : new String[]{"Flight", "Speed", "Fullbright", "ESP", "KillAura", "AutoTotem", "AutoSprint", "AutoWalk"}) {
             MODULES.put(n, false);
         }
     }
@@ -78,6 +78,7 @@ public class ExampleModClient implements ClientModInitializer {
                 new KeyMapping("key.modid.menu", InputConstants.KEY_K, KeyMapping.Category.MISC));
 
         ClientTickEvents.END_CLIENT_TICK.register(mc -> {
+            Hacks.tick(mc);
             while (menuKey.consumeClick()) {
                 mc.setScreenAndShow(new ModMenu());
             }
@@ -92,13 +93,13 @@ public class ExampleModClient implements ClientModInitializer {
         @Override
         protected void init() {
             int x = this.width / 2 - 80;
-            int y = this.height / 2 - 95;
+            int y = this.height / 2 - 130;
             for (String name : MODULES.keySet()) {
                 addRenderableWidget(Button.builder(label(name), b -> {
                     MODULES.put(name, !MODULES.get(name));
                     b.setMessage(label(name));
                 }).bounds(x, y, 160, 20).build());
-                y += 24;
+                y += 22;
             }
 
             addRenderableWidget(Button.builder(Component.literal("Give OP Shulker"), b -> {
@@ -116,7 +117,7 @@ public class ExampleModClient implements ClientModInitializer {
         @Override
         public void extractRenderState(GuiGraphicsExtractor g, int mx, int my, float delta) {
             int l = this.width / 2 - 95, r = this.width / 2 + 95;
-            int t = this.height / 2 - 125, b = this.height / 2 + 120;
+            int t = this.height / 2 - 160, b = this.height / 2 + 90;
             g.fill(l - 2, t - 2, r + 2, b + 2, 0xFF1E90FF);
             g.fill(l, t, r, b, 0xE00A1A33);
             g.centeredText(this.font, "MOD MENU", this.width / 2, t + 8, 0xFF66CCFF);
