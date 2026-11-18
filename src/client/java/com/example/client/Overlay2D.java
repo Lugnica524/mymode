@@ -3,6 +3,7 @@ package com.example.client;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -54,20 +55,22 @@ public class Overlay2D {
         boolean ent = Hacks.on("Tracers") || Hacks.on("Nametags");
         if (ent && tick % 5 == 0) {
             List<LivingEntity> list = new ArrayList<>(mc.level.getEntitiesOfClass(
-                    LivingEntity.class, mc.player.getBoundingBox().inflate(48)));
+                    LivingEntity.class, mc.player.getBoundingBox().inflate(Settings.get("TracerRange"))));
             list.removeIf(e -> e == mc.player || !e.isAlive());
             list.sort(Comparator.comparingDouble(e -> e.distanceToSqr(mc.player)));
-            ents = new ArrayList<>(list.subList(0, Math.min(12, list.size())));
+            ents = new ArrayList<>(list.subList(0, Math.min((int) Settings.get("MaxTargets"), list.size())));
         } else if (!ent) {
             ents = new ArrayList<>();
         }
         if (Hacks.on("ChestESP")) {
             if (tick % 20 == 0) {
                 List<Object[]> out = new ArrayList<>();
-                int cx = mc.player.blockPosition().getX() >> 4;
-                int cz = mc.player.blockPosition().getZ() >> 4;
-                for (int dx = -4; dx <= 4; dx++) {
-                    for (int dz = -4; dz <= 4; dz++) {
+                BlockPos pp = mc.player.blockPosition();
+                int cx = pp.getX() >> 4;
+                int cz = pp.getZ() >> 4;
+                int rad = (int) Settings.get("ChestRange");
+                for (int dx = -rad; dx <= rad; dx++) {
+                    for (int dz = -rad; dz <= rad; dz++) {
                         LevelChunk ch = mc.level.getChunk(cx + dx, cz + dz);
                         for (BlockEntity be : ch.getBlockEntities().values()) {
                             int c = 0;
@@ -79,7 +82,8 @@ public class Overlay2D {
                         }
                     }
                 }
-                boxes = out;
+                out.sort(Comparator.comparingDouble(o -> ((BlockPos) o[0]).distSqr(pp)));
+                boxes = new ArrayList<>(out.subList(0, Math.min((int) Settings.get("ChestMax"), out.size())));
             }
         } else {
             boxes = new ArrayList<>();
@@ -93,9 +97,9 @@ public class Overlay2D {
         return new float[]{(V.x / V.w * 0.5f + 0.5f) * w, (1.0f - (V.y / V.w * 0.5f + 0.5f)) * h};
     }
 
-    private static void line(GuiGraphicsExtractor g, float x0, float y0, float x1, float y1, int col) {
+    private static void line(GuiGraphicsExtractor g, float x0, float y0, float x1, float y1, int col, int maxDots) {
         float dx = x1 - x0, dy = y1 - y0;
-        int n = (int) Math.min(Math.hypot(dx, dy) / 5.0, 45);
+        int n = (int) Math.min(Math.hypot(dx, dy) / 5.0, maxDots);
         for (int i = 1; i <= n; i++) {
             float f = (float) i / n;
             int px = (int) (x0 + dx * f);
@@ -116,13 +120,14 @@ public class Overlay2D {
         int w = mc.getWindow().getGuiScaledWidth();
         int h = mc.getWindow().getGuiScaledHeight();
         float ox = w / 2.0f, oy = h;
+        int dots = (int) Settings.get("TracerDots");
 
         for (LivingEntity e : ents) {
             if (!e.isAlive()) continue;
             int col = e instanceof Player ? 0xFFFF66CC : 0xFF66CCFF;
             if (tr) {
                 float[] s = project(cp, e.getX(), e.getY() + e.getBbHeight() * 0.5, e.getZ(), w, h);
-                if (s != null) line(g, ox, oy, s[0], s[1], col);
+                if (s != null) line(g, ox, oy, s[0], s[1], col, dots);
             }
             if (nt) {
                 float[] s = project(cp, e.getX(), e.getY() + e.getBbHeight() + 0.4, e.getZ(), w, h);
@@ -134,15 +139,19 @@ public class Overlay2D {
         }
 
         if (ce) {
+            int idx = 0;
             for (Object[] b : boxes) {
-                net.minecraft.core.BlockPos bp = (net.minecraft.core.BlockPos) b[0];
+                BlockPos bp = (BlockPos) b[0];
                 int col = (Integer) b[1];
                 float[] s = project(cp, bp.getX() + 0.5, bp.getY() + 0.5, bp.getZ() + 0.5, w, h);
+                idx++;
                 if (s == null) continue;
-                line(g, ox, oy, s[0], s[1], col);
-                int dist = (int) Math.sqrt(bp.distSqr(mc.player.blockPosition()));
-                String label = b[2] + " " + dist + "m";
-                g.text(mc.font, label, (int) s[0] - mc.font.width(label) / 2, (int) s[1] - 10, col);
+                line(g, ox, oy, s[0], s[1], col, dots);
+                if (idx <= 5) {
+                    int dist = (int) Math.sqrt(bp.distSqr(mc.player.blockPosition()));
+                    String label = b[2] + " " + dist + "m";
+                    g.text(mc.font, label, (int) s[0] - mc.font.width(label) / 2, (int) s[1] - 10, col);
+                }
             }
         }
     }

@@ -20,7 +20,12 @@ public class Settings {
         new S("AimSpeed", "AimBot hızı", 12, 1, 90, 1),
         new S("AutoEatLevel", "AutoEat açlık", 14, 1, 19, 1),
         new S("LongJumpBoost", "LongJump gücü", 0.9, 0.3, 2.0, 0.1),
-        new S("FastFallSpeed", "FastFall hızı", 1.0, 0.3, 3.0, 0.1)
+        new S("FastFallSpeed", "FastFall hızı", 1.0, 0.3, 3.0, 0.1),
+        new S("TracerRange", "Tracer menzil", 64, 16, 128, 16),
+        new S("MaxTargets", "Max hedef", 10, 3, 30, 1),
+        new S("TracerDots", "Çizgi nokta", 16, 6, 45, 1),
+        new S("ChestRange", "Sandık chunk", 10, 2, 16, 1),
+        new S("ChestMax", "Max sandık", 12, 3, 40, 1)
     );
 
     private static final Map<String, Double> VAL = new HashMap<>();

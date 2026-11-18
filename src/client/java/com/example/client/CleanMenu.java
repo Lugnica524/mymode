@@ -112,7 +112,7 @@ public class CleanMenu extends Screen {
     private int[] cell(int i) {
         int cw = (PW - 28 - 8) / 2;
         int col = i % 2, row = i / 2;
-        return new int[]{left() + 14 + col * (cw + 8), top() + 58 + row * 20, cw, 18};
+        return new int[]{left() + 14 + col * (cw + 8), top() + 58 + row * 17, cw, 16};
     }
 
     private static void box(GuiGraphicsExtractor g, int x, int y, int w, int h, int border, int top, int bottom) {
@@ -160,8 +160,8 @@ public class CleanMenu extends Screen {
                 int[] c = cell(i);
                 box(g, c[0], c[1], c[2], c[3], 0xFF7B4FD6, 0xD0102560, 0xD00B1A48);
                 g.text(this.font, s.label(), c[0] + 5, c[1] + 5, 0xFFC9D8FF);
-                int[] mn = {c[0] + c[2] - 66, c[1], 16, 18};
-                int[] pl = {c[0] + c[2] - 18, c[1], 18, 18};
+                int[] mn = {c[0] + c[2] - 66, c[1], 16, 16};
+                int[] pl = {c[0] + c[2] - 18, c[1], 18, 16};
                 box(g, mn[0], mn[1], mn[2], mn[3], 0xFFD2B0FF, hit(mn, mx, my) ? 0xFFA566FF : 0xFF8B3DFF, 0xFF5B2FD0);
                 box(g, pl[0], pl[1], pl[2], pl[3], 0xFFD2B0FF, hit(pl, mx, my) ? 0xFFA566FF : 0xFF8B3DFF, 0xFF5B2FD0);
                 g.centeredText(this.font, "-", mn[0] + 8, mn[1] + 5, 0xFFFFFFFF);
@@ -218,8 +218,8 @@ public class CleanMenu extends Screen {
             if (isSettings()) {
                 for (int i = 0; i < Settings.ALL.size(); i++) {
                     int[] c = cell(i);
-                    int[] mn = {c[0] + c[2] - 66, c[1], 16, 18};
-                    int[] pl = {c[0] + c[2] - 18, c[1], 18, 18};
+                    int[] mn = {c[0] + c[2] - 66, c[1], 16, 16};
+                    int[] pl = {c[0] + c[2] - 18, c[1], 18, 16};
                     if (hit(mn, mx, my)) {
                         Settings.nudge(Settings.ALL.get(i), -1);
                         Config.save();
