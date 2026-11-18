@@ -33,11 +33,11 @@ public class Hacks {
     private static final Item[] last = new Item[9];
     private static Field delayField;
 
-    private static boolean on(String n) {
+    static boolean on(String n) {
         return ExampleModClient.MODULES.getOrDefault(n, false);
     }
 
-    private static double[] dir(Minecraft mc) {
+    static double[] dir(Minecraft mc) {
         var o = mc.options;
         double f = (o.keyUp.isDown() ? 1 : 0) - (o.keyDown.isDown() ? 1 : 0);
         double s = (o.keyLeft.isDown() ? 1 : 0) - (o.keyRight.isDown() ? 1 : 0);
@@ -49,7 +49,7 @@ public class Hacks {
         return new double[]{x / l, z / l};
     }
 
-    private static int getSel(LocalPlayer p) {
+    static int getSel(LocalPlayer p) {
         Inventory inv = p.getInventory();
         try {
             return ((Number) Inventory.class.getMethod("getSelectedSlot").invoke(inv)).intValue();
@@ -62,7 +62,7 @@ public class Hacks {
         return 0;
     }
 
-    private static void setSel(LocalPlayer p, int i) {
+    static void setSel(LocalPlayer p, int i) {
         Inventory inv = p.getInventory();
         try {
             Inventory.class.getMethod("setSelectedSlot", int.class).invoke(inv, i);
@@ -79,6 +79,7 @@ public class Hacks {
         LocalPlayer p = mc.player;
         if (p == null || mc.level == null || mc.gameMode == null) return;
         ticks++;
+        Hacks2.tick(mc);
         if (on("Freecam")) {
             if (!freeWas) { fx = p.getX(); fy = p.getEyeY(); fz = p.getZ(); freeWas = true; }
             fxo = fx; fyo = fy; fzo = fz;
@@ -95,19 +96,19 @@ public class Hacks {
         if (on("Flight")) {
             double[] d = dir(mc);
             double y = mc.options.keyJump.isDown() ? 0.5 : (mc.options.keyShift.isDown() ? -0.5 : 0.0);
-            p.setDeltaMovement(d[0] * 0.8, y, d[1] * 0.8);
+            p.setDeltaMovement(d[0] * Settings.get("FlightSpeed"), y, d[1] * Settings.get("FlightSpeed"));
         } else if (on("Speed")) {
             double[] d = dir(mc);
             if (d[0] != 0 || d[1] != 0) {
                 Vec3 m = p.getDeltaMovement();
-                p.setDeltaMovement(d[0] * 0.45, m.y, d[1] * 0.45);
+                p.setDeltaMovement(d[0] * Settings.get("SpeedValue"), m.y, d[1] * Settings.get("SpeedValue"));
             }
         }
 
         // Step
         if (on("Step")) {
             AttributeInstance ai = p.getAttribute(Attributes.STEP_HEIGHT);
-            if (ai != null) ai.setBaseValue(2.0);
+            if (ai != null) ai.setBaseValue(Settings.get("StepHeight"));
             stepWas = true;
         } else if (stepWas) {
             AttributeInstance ai = p.getAttribute(Attributes.STEP_HEIGHT);
@@ -154,8 +155,8 @@ public class Hacks {
         }
 
         // KillAura
-        if (on("KillAura") && ticks % 8 == 0) {
-            List<LivingEntity> list = mc.level.getEntitiesOfClass(LivingEntity.class, p.getBoundingBox().inflate(4.5));
+        if (on("KillAura") && ticks % (int) Settings.get("KillAuraDelay") == 0) {
+            List<LivingEntity> list = mc.level.getEntitiesOfClass(LivingEntity.class, p.getBoundingBox().inflate(Settings.get("KillAuraRange")));
             LivingEntity best = null;
             double bd = 1e9;
             for (LivingEntity e : list) {
@@ -164,7 +165,7 @@ public class Hacks {
                 if (dd < bd) { bd = dd; best = e; }
             }
             if (best != null) {
-                mc.gameMode.attack(p, best);
+                Hacks2.crit(mc, p); mc.gameMode.attack(p, best);
                 p.swing(InteractionHand.MAIN_HAND);
             }
         }
@@ -173,7 +174,7 @@ public class Hacks {
         if (on("TriggerBot") && mc.screen == null && mc.hitResult instanceof EntityHitResult eh
                 && eh.getEntity() instanceof LivingEntity le && le.isAlive()
                 && p.getAttackStrengthScale(0.0f) >= 1.0f) {
-            mc.gameMode.attack(p, le);
+            Hacks2.crit(mc, p); mc.gameMode.attack(p, le);
             p.swing(InteractionHand.MAIN_HAND);
         }
 

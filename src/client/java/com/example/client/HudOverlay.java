@@ -7,8 +7,9 @@ import net.minecraft.resources.Identifier;
 public class HudOverlay {
     public static void register() {
         HudElementRegistry.addLast(Identifier.fromNamespaceAndPath("modid", "hud"), (g, dt) -> {
-            if (!ExampleModClient.MODULES.getOrDefault("HUD", false)) return;
             Minecraft mc = Minecraft.getInstance();
+            Overlay2D.draw(g, mc);
+            if (!ExampleModClient.MODULES.getOrDefault("HUD", false)) return;
             if (mc.player == null || mc.options.hideGui) return;
             int x = 4, y = 30;
             g.text(mc.font, "MOD MENU", x, y, 0xFFB57CFF);
