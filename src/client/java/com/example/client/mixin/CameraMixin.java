@@ -16,12 +16,19 @@ public abstract class CameraMixin {
     protected abstract void setPosition(double x, double y, double z);
 
     @Shadow
+    public abstract float getCameraEntityPartialTicks(DeltaTracker dt);
+
+    @Shadow
     private boolean detached;
 
     @Inject(method = "update", at = @At("TAIL"))
     private void modid$freecam(DeltaTracker dt, CallbackInfo ci) {
         if (ExampleModClient.MODULES.getOrDefault("Freecam", false)) {
-            this.setPosition(Hacks.fx, Hacks.fy, Hacks.fz);
+            double pt = this.getCameraEntityPartialTicks(dt);
+            double x = Hacks.fxo + (Hacks.fx - Hacks.fxo) * pt;
+            double y = Hacks.fyo + (Hacks.fy - Hacks.fyo) * pt;
+            double z = Hacks.fzo + (Hacks.fz - Hacks.fzo) * pt;
+            this.setPosition(x, y, z);
             this.detached = true;
         }
     }

@@ -26,7 +26,7 @@ import java.util.List;
 
 public class Hacks {
     private static int ticks = 0;
-    public static double fx, fy, fz;
+    public static double fx, fy, fz, fxo, fyo, fzo;
     private static boolean freeWas = false;
     private static boolean fbWas = false;
     private static boolean stepWas = false;
@@ -81,9 +81,10 @@ public class Hacks {
         ticks++;
         if (on("Freecam")) {
             if (!freeWas) { fx = p.getX(); fy = p.getEyeY(); fz = p.getZ(); freeWas = true; }
+            fxo = fx; fyo = fy; fzo = fz;
             double[] fd = dir(mc);
-            fx += fd[0] * 0.9;
-            fz += fd[1] * 0.9;
+            fx += fd[0] * 0.6;
+            fz += fd[1] * 0.6;
             if (mc.options.keyJump.isDown()) fy += 0.9;
             if (mc.options.keyShift.isDown()) fy -= 0.9;
         } else {
