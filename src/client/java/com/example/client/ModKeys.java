@@ -18,6 +18,8 @@ public class ModKeys {
     }
 
     public static void tick(Minecraft mc) {
+        Overlay2D.tick(mc);
+        Overlay2D.tick(mc);
         for (var e : KEYS.entrySet()) {
             while (e.getValue().consumeClick()) {
                 ExampleModClient.MODULES.put(e.getKey(), !ExampleModClient.MODULES.get(e.getKey()));

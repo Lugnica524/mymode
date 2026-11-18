@@ -18,7 +18,7 @@ public class ExampleModClient implements ClientModInitializer {
 
     public static final Map<String, Boolean> MODULES = new LinkedHashMap<>();
     static {
-        for (String n : new String[]{"Flight", "Speed", "Fullbright", "ESP", "KillAura", "AutoTotem", "AutoSprint", "AutoWalk", "Step", "Jesus", "Spider", "Velocity", "NoFall", "TriggerBot", "AutoTool", "FastPlace", "AutoReplenish", "Scaffold", "HUD", "Freecam", "Strafe", "AutoJump", "Parkour", "SafeWalk", "LongJump", "FastFall", "Blink", "AutoArmor", "AutoClicker", "Criticals", "AimBot", "AutoSword", "FastBow", "AutoEat", "AutoRespawn", "Nuker", "Lawnmower", "FastBreak", "Reach", "NoWeather", "Tracers", "Nametags", "Zoom"}) {
+        for (String n : new String[]{"Flight", "Speed", "Fullbright", "ESP", "KillAura", "AutoTotem", "AutoSprint", "AutoWalk", "Step", "Jesus", "Spider", "Velocity", "NoFall", "TriggerBot", "AutoTool", "FastPlace", "AutoReplenish", "Scaffold", "HUD", "Freecam", "Strafe", "AutoJump", "Parkour", "SafeWalk", "LongJump", "FastFall", "Blink", "AutoArmor", "AutoClicker", "Criticals", "AimBot", "AutoSword", "FastBow", "AutoEat", "AutoRespawn", "Nuker", "Lawnmower", "FastBreak", "Reach", "NoWeather", "Tracers", "Nametags", "Zoom", "ChestESP"}) {
             MODULES.put(n, false);
         }
     }

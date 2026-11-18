@@ -20,7 +20,7 @@ public class CleanMenu extends Screen {
         {"Flight", "Speed", "Step", "Jesus", "Spider", "NoFall", "AutoSprint", "AutoWalk", "Strafe", "AutoJump", "Parkour", "SafeWalk", "LongJump", "FastFall", "Blink"},
         {"AutoEat", "AutoRespawn", "AutoTool", "FastPlace", "AutoReplenish", "Scaffold"},
         {"Nuker", "Lawnmower", "FastBreak", "Reach", "NoWeather"},
-        {"Fullbright", "ESP", "HUD", "Freecam", "Tracers", "Nametags", "Zoom"},
+        {"Fullbright", "ESP", "HUD", "Freecam", "Tracers", "Nametags", "Zoom", "ChestESP"},
         {}
     };
     private static int tab = 0;
@@ -73,6 +73,8 @@ public class CleanMenu extends Screen {
             {"Zoom", "Görüşü yakınlaştırır. Oranı Ayarlar'dan değiştir."}
         };
         for (String[] e : d) DESC.put(e[0], e[1]);
+        DESC.put("ChestESP", "Sandık, ender sandığı ve shulker box için çizgi çeker.");
+        DESC.put("ChestESP", "Sandık, ender sandığı ve shulker box için çizgi çeker.");
     }
     private static final String SHULKER_DESC = "OP eşya dolu Shulker verir. Tek oyunculuda komutsuz çalışır.";
 
